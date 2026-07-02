@@ -9,7 +9,7 @@ export const MEAL_RATES = { adult: 147, child: 73.5 } as const;
 
 export const REG_FEES = {
   family: { label: "Couple / Family", fee: 300 },
-  ya: { label: "Individual Registration", fee: 150 },
+  ya: { label: "YA Registration", fee: 150 },
   student: { label: "Campus Student", fee: 50 },
 } as const;
 
