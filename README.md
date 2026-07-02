@@ -2,7 +2,7 @@
 
 Estimate registration and Ridgecrest costs for UPSTREAM 2026 (Dec 29 – Jan 2, Ridgecrest, NC).
 
-**Live site:** `https://<your-github-username>.github.io/registration-cost-calculator/`
+**Live site:** `https://tvarghese.github.io/upstream-cost-calculator/`
 
 ## Local development
 
@@ -20,7 +20,7 @@ npm run build
 npm run preview
 ```
 
-Then open `http://localhost:4173/registration-cost-calculator/`.
+Then open `http://localhost:4173/upstream-cost-calculator/`.
 
 ## Updating rates and copy
 
@@ -37,7 +37,7 @@ UI components are split by section under [`src/components/calculator/`](src/comp
 
 ## Deploy to GitHub Pages
 
-1. Create a GitHub repository named **`registration-cost-calculator`** (must match the `base` path in `vite.config.ts`).
+1. Create a GitHub repository named **`upstream-cost-calculator`** (must match the `base` path in `vite.config.ts`).
 2. Push this project to the `main` branch.
 3. In the repo: **Settings → Pages → Build and deployment → Source** → select **GitHub Actions**.
 4. Every push to `main` triggers the deploy workflow automatically.
