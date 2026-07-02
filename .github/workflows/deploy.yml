@@ -12,7 +12,9 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Must be false: cancelling a workflow does not cancel the Pages deployment
+  # already submitted to GitHub, which causes "in progress deployment" errors.
+  cancel-in-progress: false
 
 jobs:
   build:
