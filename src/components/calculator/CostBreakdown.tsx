@@ -1,0 +1,64 @@
+import { fmt } from "../../lib/format";
+import type { LineItem } from "../../lib/types";
+
+interface CostBreakdownProps {
+  lineItems: LineItem[];
+  regFee: number;
+  ridgecrestTotal: number;
+  grandTotal: number;
+  perPerson?: number;
+  totalPeople?: number;
+}
+
+export function CostBreakdown({
+  lineItems,
+  regFee,
+  ridgecrestTotal,
+  grandTotal,
+  perPerson,
+  totalPeople,
+}: CostBreakdownProps) {
+  return (
+    <div className="breakdown">
+      <div className="breakdown__title">Your Cost Breakdown</div>
+
+      {lineItems.map((item, i) => (
+        <div
+          key={item.label}
+          className={`breakdown__item ${i < lineItems.length - 1 ? "breakdown__item--bordered" : ""}`}
+        >
+          <div>
+            <div className="breakdown__item-label">{item.label}</div>
+            <div className="breakdown__item-sub">{item.sub}</div>
+            <div
+              className={`breakdown__badge ${item.dest === "JY" ? "breakdown__badge--jy" : "breakdown__badge--ridgecrest"}`}
+            >
+              → Pay to {item.dest === "JY" ? "JY USA" : "Ridgecrest"}
+            </div>
+          </div>
+          <div className="breakdown__item-amount">{fmt(item.amount)}</div>
+        </div>
+      ))}
+
+      <div className="breakdown__totals">
+        <div className="breakdown__total-row">
+          <span className="breakdown__total-jy">Total to JY USA</span>
+          <strong className="breakdown__total-jy">{fmt(regFee)}</strong>
+        </div>
+        <div className="breakdown__total-row breakdown__total-row--spaced">
+          <span className="breakdown__total-ridgecrest">Total to Ridgecrest</span>
+          <strong className="breakdown__total-ridgecrest">{fmt(ridgecrestTotal)}</strong>
+        </div>
+        <div className="breakdown__grand-total">
+          <span className="breakdown__grand-label">GRAND TOTAL</span>
+          <span className="breakdown__grand-amount">{fmt(grandTotal)}</span>
+        </div>
+        {perPerson !== undefined && totalPeople !== undefined && totalPeople > 0 && (
+          <div className="breakdown__per-person">
+            ≈ {fmt(perPerson)} per person across {totalPeople} people
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
