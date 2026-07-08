@@ -20,9 +20,13 @@ export const NOTICES = {
   familyRoom:
     "Room cost is fixed for the whole room regardless of how many stay in it.",
   royalGorgeAddon:
-    "Older kids (18+, not in Madsters) who want to stay with friends in the Royal Gorge bunk room can do so for a flat $100 add-on per person. This is in addition to your regular family room cost. You can send more than one.",
+    "Older kids (18+, not in Madsters) who want to stay with friends in the Royal Gorge bunk room can do so for a flat $100 add-on per person. This is in addition to your regular family room cost. You can send more than one. If bunk beds are chosen, this add-on is paid to JY USA and included in your Total to JY USA.",
   royalGorgeAddonNote:
     "Room assignment in Royal Gorge is handled by organizers (12 per bunk room).",
   roomSharing:
     "Include yourself. The room cost divides equally — more people = lower cost each.",
+  familyLargeFamily:
+    "Families with 6+ children use a separate registration form — you will receive details from organizers.",
+  familyLargeCap:
+    "Your estimated total has been capped at $1,900.",
 } as const;

@@ -525,6 +525,40 @@
   border-top: 1px solid var(--color-border-divider);
 }
 
+.breakdown__large-family {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.breakdown__cap-notice {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-notice-bg);
+  border: 1px solid var(--color-notice-border);
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.breakdown__cap-detail {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.breakdown__large-family-notice {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-notice-inner-bg);
+  border: 1px solid var(--color-notice-border);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
 .breakdown__total-row {
   display: flex;
   justify-content: space-between;

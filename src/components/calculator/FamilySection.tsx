@@ -19,6 +19,8 @@ interface FamilySectionProps {
   famRoom: string;
   royalGorgeKids: number;
   totalFamPeople: number;
+  totalKids: number;
+  isLargeFamily: boolean;
   effectiveRGKids: number;
   royalGorgeTotal: number;
   onAdultsChange: (value: number) => void;
@@ -40,6 +42,8 @@ export function FamilySection({
   effectiveRGKids,
   royalGorgeTotal,
   totalFamPeople,
+  totalKids,
+  isLargeFamily,
   onAdultsChange,
   onDisciplesChange,
   onOlder18plusChange,
@@ -112,40 +116,50 @@ export function FamilySection({
           <span className="summary-row__label">Total family members included here</span>
           <span className="summary-row__value">{totalFamPeople}</span>
         </div>
+        {isLargeFamily && (
+          <div className="info-box info-box--orange">
+            {NOTICES.familyLargeFamily}
+            <div className="info-box__note">
+              {totalKids} children in your family — your flat rate is $1,900 paid to JY USA.
+            </div>
+          </div>
+        )}
       </Section>
 
-      <Section step="3" label="Family Room Choice">
-        <p className="hint-text">{NOTICES.familyRoom}</p>
-        <div className="select-list">
-          {ROOMS_FAM.map((r) => {
-            const selected = famRoom === r.id;
-            return (
-              <SelectCard
-                key={r.id}
-                selected={selected}
-                onClick={() => onFamRoomChange(r.id)}
-                trailing={
-                  <div className="select-card__price">{fmt(r.rate * NIGHTS)}</div>
-                }
-              >
-                <div className="select-card__header">
-                  <span className="select-card__name">{r.name}</span>
-                  {r.limited && (
-                    <span className="limited-badge">⚑ Only 13 rooms</span>
-                  )}
-                </div>
-                <div className="select-card__desc">{r.desc}</div>
-                <div className="select-card__detail">
-                  ${r.rate}/night × {NIGHTS} nights ={" "}
-                  <strong>{fmt(r.rate * NIGHTS)}</strong> whole room
-                </div>
-              </SelectCard>
-            );
-          })}
-        </div>
-      </Section>
+      {!isLargeFamily && (
+        <Section step="3" label="Family Room Choice">
+          <p className="hint-text">{NOTICES.familyRoom}</p>
+          <div className="select-list">
+            {ROOMS_FAM.map((r) => {
+              const selected = famRoom === r.id;
+              return (
+                <SelectCard
+                  key={r.id}
+                  selected={selected}
+                  onClick={() => onFamRoomChange(r.id)}
+                  trailing={
+                    <div className="select-card__price">{fmt(r.rate * NIGHTS)}</div>
+                  }
+                >
+                  <div className="select-card__header">
+                    <span className="select-card__name">{r.name}</span>
+                    {r.limited && (
+                      <span className="limited-badge">⚑ Only 13 rooms</span>
+                    )}
+                  </div>
+                  <div className="select-card__desc">{r.desc}</div>
+                  <div className="select-card__detail">
+                    ${r.rate}/night × {NIGHTS} nights ={" "}
+                    <strong>{fmt(r.rate * NIGHTS)}</strong> whole room
+                  </div>
+                </SelectCard>
+              );
+            })}
+          </div>
+        </Section>
+      )}
 
-      {older18plus > 0 && (
+      {!isLargeFamily && older18plus > 0 && (
         <Section step="4" label="Royal Gorge Bunk (optional — Older Kids 18+)">
           <div className="info-box info-box--pink">
             {NOTICES.royalGorgeAddon}

@@ -95,6 +95,8 @@ export function UpstreamCalculator() {
               famRoom={famRoom}
               royalGorgeKids={royalGorgeKids}
               totalFamPeople={familyResult.totalFamPeople}
+              totalKids={familyResult.totalKids}
+              isLargeFamily={familyResult.isLargeFamily}
               effectiveRGKids={familyResult.effectiveRGKids}
               royalGorgeTotal={familyResult.royalGorgeTotal}
               onAdultsChange={setAdults}
@@ -110,11 +112,14 @@ export function UpstreamCalculator() {
           {costResult && (
             <CostBreakdown
               lineItems={costResult.lineItems}
-              regFee={costResult.regFee}
+              jyTotal={costResult.jyTotal}
               ridgecrestTotal={costResult.ridgecrestTotal}
               grandTotal={costResult.grandTotal}
               perPerson={familyResult?.famPerPerson}
               totalPeople={familyResult?.totalFamPeople}
+              isLargeFamily={familyResult?.isLargeFamily}
+              isCapped={familyResult?.isCapped}
+              uncappedTotal={familyResult?.uncappedTotal}
             />
           )}
 

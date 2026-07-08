@@ -1,22 +1,29 @@
+import { NOTICES } from "../../config/event";
 import { fmt } from "../../lib/format";
 import type { LineItem } from "../../lib/types";
 
 interface CostBreakdownProps {
   lineItems: LineItem[];
-  regFee: number;
+  jyTotal: number;
   ridgecrestTotal: number;
   grandTotal: number;
   perPerson?: number;
   totalPeople?: number;
+  isLargeFamily?: boolean;
+  isCapped?: boolean;
+  uncappedTotal?: number;
 }
 
 export function CostBreakdown({
   lineItems,
-  regFee,
+  jyTotal,
   ridgecrestTotal,
   grandTotal,
   perPerson,
   totalPeople,
+  isLargeFamily,
+  isCapped,
+  uncappedTotal,
 }: CostBreakdownProps) {
   return (
     <div className="breakdown">
@@ -40,15 +47,33 @@ export function CostBreakdown({
         </div>
       ))}
 
+      {isLargeFamily && (
+        <div className="breakdown__large-family">
+          {isCapped && uncappedTotal !== undefined && (
+            <div className="breakdown__cap-notice">
+              <strong>{NOTICES.familyLargeCap}</strong>
+              <span className="breakdown__cap-detail">
+                Calculated total was {fmt(uncappedTotal)} before the cap was applied.
+              </span>
+            </div>
+          )}
+          <div className="breakdown__large-family-notice">
+            📌 {NOTICES.familyLargeFamily}
+          </div>
+        </div>
+      )}
+
       <div className="breakdown__totals">
         <div className="breakdown__total-row">
           <span className="breakdown__total-jy">Total to JY USA</span>
-          <strong className="breakdown__total-jy">{fmt(regFee)}</strong>
+          <strong className="breakdown__total-jy">{fmt(jyTotal)}</strong>
         </div>
-        <div className="breakdown__total-row breakdown__total-row--spaced">
-          <span className="breakdown__total-ridgecrest">Total to Ridgecrest</span>
-          <strong className="breakdown__total-ridgecrest">{fmt(ridgecrestTotal)}</strong>
-        </div>
+        {ridgecrestTotal > 0 && (
+          <div className="breakdown__total-row breakdown__total-row--spaced">
+            <span className="breakdown__total-ridgecrest">Total to Ridgecrest</span>
+            <strong className="breakdown__total-ridgecrest">{fmt(ridgecrestTotal)}</strong>
+          </div>
+        )}
         <div className="breakdown__grand-total">
           <span className="breakdown__grand-label">GRAND TOTAL</span>
           <span className="breakdown__grand-amount">{fmt(grandTotal)}</span>

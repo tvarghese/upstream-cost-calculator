@@ -13,6 +13,11 @@ export const REG_FEES = {
   student: { label: "Campus Student", fee: 50 },
 } as const;
 
+/** Families with more than 6 members and 6+ kids are capped at this total. */
+export const FAMILY_LARGE_MIN_MEMBERS = 7;
+export const FAMILY_LARGE_MIN_KIDS = 6;
+export const FAMILY_LARGE_CAP = 1900;
+
 export const ROOMS_YA = [
   {
     id: "pritchell",

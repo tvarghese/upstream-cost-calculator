@@ -1,4 +1,7 @@
 import {
+  FAMILY_LARGE_CAP,
+  FAMILY_LARGE_MIN_KIDS,
+  FAMILY_LARGE_MIN_MEMBERS,
   MEAL_RATES,
   NIGHTS,
   REG_FEES,
@@ -31,8 +34,11 @@ export function calculateIndividual(input: IndividualInput): IndividualCostResul
   }
 
   const yaMeals = MEAL_RATES.adult;
-  const ridgecrestTotal = yaRoomShare + yaMeals;
-  const grandTotal = regFee + ridgecrestTotal;
+  const royalGorgeShare = yaRoom === "royalgorge" ? yaRoomShare : 0;
+  const ridgecrestRoomShare = yaRoom === "royalgorge" ? 0 : yaRoomShare;
+  const jyTotal = regFee + royalGorgeShare;
+  const ridgecrestTotal = ridgecrestRoomShare + yaMeals;
+  const grandTotal = jyTotal + ridgecrestTotal;
 
   const lineItems: LineItem[] = [
     {
@@ -41,18 +47,26 @@ export function calculateIndividual(input: IndividualInput): IndividualCostResul
       sub: REG_FEES[category].label,
       dest: "JY",
     },
-    {
-      label:
-        yaRoom === "royalgorge"
-          ? "Royal Gorge Bunk – your share"
-          : `Room – ${yaRoomData.name} (your share)`,
-      amount: yaRoomShare,
-      sub:
-        yaRoom === "royalgorge"
-          ? `$${ROYAL_GORGE_RATE}/night ÷ ${ROYAL_GORGE_OCC} people = $${ROYAL_GORGE_PERSON}/night × ${NIGHTS} nights`
-          : `$${yaRoomData.rate}/night × ${NIGHTS} nights ÷ ${Math.min(yaCount, "maxOcc" in yaRoomData ? yaRoomData.maxOcc : 4)} people sharing`,
-      dest: "Ridgecrest",
-    },
+    ...(royalGorgeShare > 0
+      ? [
+          {
+            label: "Royal Gorge Bunk – your share",
+            amount: royalGorgeShare,
+            sub: `$${ROYAL_GORGE_RATE}/night ÷ ${ROYAL_GORGE_OCC} people = $${ROYAL_GORGE_PERSON}/night × ${NIGHTS} nights`,
+            dest: "JY" as const,
+          },
+        ]
+      : []),
+    ...(ridgecrestRoomShare > 0
+      ? [
+          {
+            label: `Room – ${yaRoomData.name} (your share)`,
+            amount: ridgecrestRoomShare,
+            sub: `$${yaRoomData.rate}/night × ${NIGHTS} nights ÷ ${Math.min(yaCount, "maxOcc" in yaRoomData ? yaRoomData.maxOcc : 4)} people sharing`,
+            dest: "Ridgecrest" as const,
+          },
+        ]
+      : []),
     {
       label: "Meals",
       amount: yaMeals,
@@ -63,6 +77,7 @@ export function calculateIndividual(input: IndividualInput): IndividualCostResul
 
   return {
     regFee,
+    jyTotal,
     ridgecrestTotal,
     grandTotal,
     lineItems,
@@ -95,8 +110,48 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
   const effectiveRGKids = Math.min(royalGorgeKids, older18plus);
   const royalGorgeTotal = effectiveRGKids * ROYAL_GORGE_ADDON;
 
-  const ridgecrestTotal = famRoomTotal + famMealsTotal + royalGorgeTotal;
-  const grandTotal = regFee + ridgecrestTotal;
+  const totalKids = disciples + older18plus + kids7to11 + kidsUnder7;
+  const isLargeFamily =
+    totalFamPeople >= FAMILY_LARGE_MIN_MEMBERS &&
+    totalKids >= FAMILY_LARGE_MIN_KIDS;
+
+  const uncappedTotal = regFee + royalGorgeTotal + famRoomTotal + famMealsTotal;
+
+  if (isLargeFamily) {
+    const jyTotal = FAMILY_LARGE_CAP;
+    const ridgecrestTotal = 0;
+    const grandTotal = FAMILY_LARGE_CAP;
+    const famPerPerson = totalFamPeople > 0 ? grandTotal / totalFamPeople : 0;
+
+    const lineItems: LineItem[] = [
+      {
+        label: "Large Family Registration",
+        amount: FAMILY_LARGE_CAP,
+        sub: `${totalFamPeople} family members · flat rate (room & meals included)`,
+        dest: "JY",
+      },
+    ];
+
+    return {
+      regFee,
+      jyTotal,
+      ridgecrestTotal,
+      grandTotal,
+      lineItems,
+      totalFamPeople,
+      totalKids,
+      famPerPerson,
+      effectiveRGKids,
+      royalGorgeTotal,
+      isLargeFamily,
+      isCapped: uncappedTotal > FAMILY_LARGE_CAP,
+      uncappedTotal,
+    };
+  }
+
+  const jyTotal = regFee + royalGorgeTotal;
+  const ridgecrestTotal = famRoomTotal + famMealsTotal;
+  const grandTotal = jyTotal + ridgecrestTotal;
   const famPerPerson = totalFamPeople > 0 ? grandTotal / totalFamPeople : 0;
 
   const lineItems: LineItem[] = [
@@ -118,7 +173,7 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
             label: `Royal Gorge Add-on (${effectiveRGKids} older kid${effectiveRGKids > 1 ? "s" : ""})`,
             amount: royalGorgeTotal,
             sub: `${effectiveRGKids} × $${ROYAL_GORGE_ADDON} flat — stays with friends in bunk room`,
-            dest: "Ridgecrest" as const,
+            dest: "JY" as const,
           },
         ]
       : []),
@@ -140,12 +195,17 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
 
   return {
     regFee,
+    jyTotal,
     ridgecrestTotal,
     grandTotal,
     lineItems,
     totalFamPeople,
+    totalKids,
     famPerPerson,
     effectiveRGKids,
     royalGorgeTotal,
+    isLargeFamily: false,
+    isCapped: false,
+    uncappedTotal: grandTotal,
   };
 }
