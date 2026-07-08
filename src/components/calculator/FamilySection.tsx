@@ -1,9 +1,9 @@
 import { NOTICES } from "../../config/event";
 import {
+  getFamilyRoomsForPeople,
   MEAL_RATES,
   NIGHTS,
   ROYAL_GORGE_ADDON,
-  ROOMS_FAM,
 } from "../../config/rates";
 import { fmt } from "../../lib/format";
 import { Counter } from "../ui/Counter";
@@ -52,6 +52,8 @@ export function FamilySection({
   onFamRoomChange,
   onRoyalGorgeKidsChange,
 }: FamilySectionProps) {
+  const availableRooms = getFamilyRoomsForPeople(totalFamPeople);
+
   return (
     <>
       <Section step="2" label="Family Composition">
@@ -126,11 +128,11 @@ export function FamilySection({
         )}
       </Section>
 
-      {!isLargeFamily && (
+      {!isLargeFamily && availableRooms.length > 0 && (
         <Section step="3" label="Family Room Choice">
           <p className="hint-text">{NOTICES.familyRoom}</p>
           <div className="select-list">
-            {ROOMS_FAM.map((r) => {
+            {availableRooms.map((r) => {
               const selected = famRoom === r.id;
               return (
                 <SelectCard

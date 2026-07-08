@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EVENT } from "../../config/event";
+import {
+  FAMILY_LARGE_MIN_KIDS,
+  FAMILY_LARGE_MIN_MEMBERS,
+  getFamilyRoomsForPeople,
+} from "../../config/rates";
 import { calculateFamily, calculateIndividual } from "../../lib/calculate";
 import type { Category } from "../../lib/types";
 import { CategorySelector } from "./CategorySelector";
@@ -20,11 +25,26 @@ export function UpstreamCalculator() {
   const [older18plus, setOlder18plus] = useState(0);
   const [kids7to11, setKids7to11] = useState(0);
   const [kidsUnder7, setKidsUnder7] = useState(0);
-  const [famRoom, setFamRoom] = useState("walnut");
+  const [famRoom, setFamRoom] = useState("pritchell");
   const [royalGorgeKids, setRoyalGorgeKids] = useState(0);
 
   const isFamily = category === "family";
   const isIndividual = category === "ya" || category === "student";
+
+  const totalFamPeople =
+    adults + disciples + older18plus + kids7to11 + kidsUnder7;
+  const totalKids = disciples + older18plus + kids7to11 + kidsUnder7;
+  const isLargeFamily =
+    totalFamPeople >= FAMILY_LARGE_MIN_MEMBERS &&
+    totalKids >= FAMILY_LARGE_MIN_KIDS;
+
+  useEffect(() => {
+    if (!isFamily || isLargeFamily) return;
+    const available = getFamilyRoomsForPeople(totalFamPeople);
+    if (available.length > 0 && !available.some((r) => r.id === famRoom)) {
+      setFamRoom(available[0].id);
+    }
+  }, [totalFamPeople, famRoom, isFamily, isLargeFamily]);
 
   const handleCategoryChange = (next: Category) => {
     setCategory(next);

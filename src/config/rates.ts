@@ -48,6 +48,7 @@ export const ROOMS_FAM = [
     desc: "1 Queen + 2 Bunks · only 13 rooms · first come, first served",
     rate: 114,
     limited: true,
+    minPeople: 6,
   },
   {
     id: "mountlaurel",
@@ -55,6 +56,7 @@ export const ROOMS_FAM = [
     desc: "Premium",
     rate: 144,
     limited: false,
+    minPeople: 4,
   },
   {
     id: "pritchell",
@@ -62,8 +64,18 @@ export const ROOMS_FAM = [
     desc: "Single / Double / 2 Queen",
     rate: 94,
     limited: false,
+    minPeople: 2,
+    maxPeople: 3,
   },
 ] as const;
+
+export function getFamilyRoomsForPeople(people: number) {
+  return ROOMS_FAM.filter((r) => {
+    if (people < r.minPeople) return false;
+    if ("maxPeople" in r && people > r.maxPeople) return false;
+    return true;
+  });
+}
 
 export const ROOM_REFERENCE = [
   { name: "Pritchell", rate: 94, note: "up to 3 (YA) / families welcome" },
