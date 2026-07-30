@@ -74,7 +74,7 @@ export function FamilySection({
           />
           <Counter
             label="Disciples Track (12–17)"
-            subtitle={`$${MEAL_RATES.adult}/person meals · attending UPSTREAM main program`}
+            subtitle={`$${MEAL_RATES.adult}/person meals`}
             value={disciples}
             min={0}
             max={8}
@@ -83,7 +83,7 @@ export function FamilySection({
           />
           <Counter
             label="Older Kids (18+, not Madsters)"
-            subtitle={`$${MEAL_RATES.adult}/person meals · can opt for Royal Gorge`}
+            subtitle={`$${MEAL_RATES.adult}/person meals`}
             value={older18plus}
             min={0}
             max={8}

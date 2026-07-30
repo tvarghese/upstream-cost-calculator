@@ -48,7 +48,7 @@ export const ROOMS_FAM = [
   {
     id: "mountlaurel",
     name: "Mount Laurel",
-    desc: "Premium",
+    desc: "2 Queen Beds",
     rate: 144,
     limited: false,
     minPeople: 4,
@@ -56,7 +56,7 @@ export const ROOMS_FAM = [
   {
     id: "pritchell",
     name: "Pritchell",
-    desc: "Single / Double / 2 Queen",
+    desc: "Single, Double",
     rate: 94,
     limited: false,
     minPeople: 2,
