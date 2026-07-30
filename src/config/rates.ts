@@ -13,29 +13,24 @@ export const REG_FEES = {
   student: { label: "Campus Student", fee: 50 },
 } as const;
 
-/** Families with more than 6 members and 6+ kids are capped at this total. */
-export const FAMILY_LARGE_MIN_MEMBERS = 7;
-export const FAMILY_LARGE_MIN_KIDS = 6;
-export const FAMILY_LARGE_CAP = 1900;
-
 export const ROOMS_YA = [
   {
     id: "pritchell",
-    name: "Pritchell",
-    desc: "Single / Double / 2 Queen",
+    name: "Pritchell Single Double",
+    desc: "1 Single Bed, 1 Double Bed · sleeps 3",
     rate: 94,
     maxOcc: 3,
   },
   {
     id: "mountlaurel",
-    name: "Mount Laurel",
-    desc: "Premium",
+    name: "Mount Laurel West 2 Queen",
+    desc: "2 Queen Beds · sleeps 4 · handicap accessible",
     rate: 144,
     maxOcc: 4,
   },
   {
     id: "royalgorge",
-    name: "Royal Gorge (Bunk)",
+    name: "Youth Royal Gorge Bunks",
     desc: "Organizers assign 12 per room",
     rate: null,
   },
@@ -78,8 +73,62 @@ export function getFamilyRoomsForPeople(people: number) {
 }
 
 export const ROOM_REFERENCE = [
-  { name: "Pritchell", rate: 94, note: "up to 3 (YA) / families welcome" },
-  { name: "Mt Laurel", rate: 144, note: "up to 4 (YA) / families welcome" },
-  { name: "Walnut", rate: 114, note: "families only · 13 rooms" },
-  { name: "Royal Gorge", rate: null, note: "YA / older kids · 12/room" },
+  {
+    name: "Pritchell Single Double",
+    rate: 94,
+    note: "up to 3 (YA) / families welcome",
+    beds: "1 Single Bed, 1 Double Bed",
+    bedCount: 2,
+    sleeps: 3,
+    accessible: false,
+    amenities: [
+      { label: "Private Bathroom", included: true },
+      { label: "Desk", included: true },
+      { label: "Iron & Board", included: true },
+      { label: "Hairdryer", included: false },
+    ],
+  },
+  {
+    name: "Mount Laurel West 2 Queen",
+    rate: 144,
+    note: "up to 4 (YA) / families welcome",
+    beds: "2 Queen Beds",
+    bedCount: 2,
+    sleeps: 4,
+    accessible: true,
+    amenities: [
+      { label: "Private Bathroom", included: true },
+      { label: "Mini Fridge", included: true },
+      { label: "Coffee Maker", included: true },
+      { label: "Desk", included: true },
+      { label: "Hairdryer", included: true },
+      { label: "Iron & Board", included: true },
+    ],
+  },
+  {
+    name: "Walnut 1 Queen Bed and 2 Bunks",
+    rate: 114,
+    note: "families only · 13 rooms",
+    beds: "1 Queen Bed, 2 sets of Bunks",
+    bedCount: 5,
+    sleeps: 6,
+    accessible: false,
+    amenities: [
+      { label: "Private Bathroom", included: true },
+      { label: "Hairdryer", included: false },
+    ],
+  },
+  {
+    name: "Youth Royal Gorge Bunks",
+    rate: null,
+    note: "YA / older kids · 12/room",
+    beds: "6 sets of Bunks",
+    bedCount: null,
+    sleeps: 12,
+    accessible: false,
+    amenities: [
+      { label: "Private Bathroom", included: true },
+      { label: "Hairdryer", included: false },
+    ],
+  },
 ] as const;

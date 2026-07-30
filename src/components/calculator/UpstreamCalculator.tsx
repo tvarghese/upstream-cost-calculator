@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { EVENT } from "../../config/event";
-import {
-  FAMILY_LARGE_MIN_KIDS,
-  FAMILY_LARGE_MIN_MEMBERS,
-  getFamilyRoomsForPeople,
-} from "../../config/rates";
+import { getFamilyRoomsForPeople } from "../../config/rates";
 import { calculateFamily, calculateIndividual } from "../../lib/calculate";
 import type { Category } from "../../lib/types";
 import { CategorySelector } from "./CategorySelector";
@@ -33,18 +29,14 @@ export function UpstreamCalculator() {
 
   const totalFamPeople =
     adults + disciples + older18plus + kids7to11 + kidsUnder7;
-  const totalKids = disciples + older18plus + kids7to11 + kidsUnder7;
-  const isLargeFamily =
-    totalFamPeople >= FAMILY_LARGE_MIN_MEMBERS &&
-    totalKids >= FAMILY_LARGE_MIN_KIDS;
 
   useEffect(() => {
-    if (!isFamily || isLargeFamily) return;
+    if (!isFamily) return;
     const available = getFamilyRoomsForPeople(totalFamPeople);
     if (available.length > 0 && !available.some((r) => r.id === famRoom)) {
       setFamRoom(available[0].id);
     }
-  }, [totalFamPeople, famRoom, isFamily, isLargeFamily]);
+  }, [totalFamPeople, famRoom, isFamily]);
 
   const handleCategoryChange = (next: Category) => {
     setCategory(next);
@@ -115,8 +107,6 @@ export function UpstreamCalculator() {
               famRoom={famRoom}
               royalGorgeKids={royalGorgeKids}
               totalFamPeople={familyResult.totalFamPeople}
-              totalKids={familyResult.totalKids}
-              isLargeFamily={familyResult.isLargeFamily}
               effectiveRGKids={familyResult.effectiveRGKids}
               royalGorgeTotal={familyResult.royalGorgeTotal}
               onAdultsChange={setAdults}
@@ -137,9 +127,6 @@ export function UpstreamCalculator() {
               grandTotal={costResult.grandTotal}
               perPerson={familyResult?.famPerPerson}
               totalPeople={familyResult?.totalFamPeople}
-              isLargeFamily={familyResult?.isLargeFamily}
-              isCapped={familyResult?.isCapped}
-              uncappedTotal={familyResult?.uncappedTotal}
             />
           )}
 

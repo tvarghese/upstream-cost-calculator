@@ -201,6 +201,9 @@
   font-size: 11px;
   color: var(--color-text-subtle);
   min-width: 60px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-left: 10px;
 }
 
 .select-card__price {
@@ -525,40 +528,6 @@
   border-top: 1px solid var(--color-border-divider);
 }
 
-.breakdown__large-family {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.breakdown__cap-notice {
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  background: var(--color-notice-bg);
-  border: 1px solid var(--color-notice-border);
-  font-size: 13px;
-  color: var(--color-text);
-  line-height: 1.5;
-}
-
-.breakdown__cap-detail {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.breakdown__large-family-notice {
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  background: var(--color-notice-inner-bg);
-  border: 1px solid var(--color-notice-border);
-  font-size: 12px;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-}
-
 .breakdown__total-row {
   display: flex;
   justify-content: space-between;
@@ -638,24 +607,69 @@
 
 .room-reference__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 8px;
 }
 
 .room-reference__item {
-  text-align: center;
   font-size: 11px;
   color: var(--color-text-muted);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-faint);
+}
+
+.room-reference__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
 }
 
 .room-reference__name {
   font-weight: 600;
   color: var(--color-text-body);
-  margin-bottom: 2px;
+}
+
+.room-reference__badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-blue-badge-bg);
+  color: var(--color-blue-light);
+  border: 1px solid var(--color-border-subtle);
 }
 
 .room-reference__total {
   color: var(--color-accent-light);
+}
+
+.room-reference__beds {
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--color-text-subtle);
+}
+
+.room-reference__amenities {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 2px 10px;
+  font-size: 10px;
+}
+
+.room-reference__amenity {
+  color: var(--color-text-body);
+}
+
+.room-reference__amenity--absent {
+  color: var(--color-text-dim);
 }
 
 .room-reference__note {
@@ -681,7 +695,7 @@
   }
 
   .room-reference__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .rg-grid {

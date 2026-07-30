@@ -1,4 +1,3 @@
-import { NOTICES } from "../../config/event";
 import { fmt } from "../../lib/format";
 import type { LineItem } from "../../lib/types";
 
@@ -9,9 +8,6 @@ interface CostBreakdownProps {
   grandTotal: number;
   perPerson?: number;
   totalPeople?: number;
-  isLargeFamily?: boolean;
-  isCapped?: boolean;
-  uncappedTotal?: number;
 }
 
 export function CostBreakdown({
@@ -21,9 +17,6 @@ export function CostBreakdown({
   grandTotal,
   perPerson,
   totalPeople,
-  isLargeFamily,
-  isCapped,
-  uncappedTotal,
 }: CostBreakdownProps) {
   return (
     <div className="breakdown">
@@ -46,22 +39,6 @@ export function CostBreakdown({
           <div className="breakdown__item-amount">{fmt(item.amount)}</div>
         </div>
       ))}
-
-      {isLargeFamily && (
-        <div className="breakdown__large-family">
-          {isCapped && uncappedTotal !== undefined && (
-            <div className="breakdown__cap-notice">
-              <strong>{NOTICES.familyLargeCap}</strong>
-              <span className="breakdown__cap-detail">
-                Calculated total was {fmt(uncappedTotal)} before the cap was applied.
-              </span>
-            </div>
-          )}
-          <div className="breakdown__large-family-notice">
-            📌 {NOTICES.familyLargeFamily}
-          </div>
-        </div>
-      )}
 
       <div className="breakdown__totals">
         <div className="breakdown__total-row">

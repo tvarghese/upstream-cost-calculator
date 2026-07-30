@@ -25,8 +25,4 @@ export const NOTICES = {
     "Room assignment in Royal Gorge is handled by organizers (12 per bunk room).",
   roomSharing:
     "Include yourself. The room cost divides equally — more people = lower cost each.",
-  familyLargeFamily:
-    "Families with 6+ children use a separate registration form — you will receive details from organizers.",
-  familyLargeCap:
-    "Your estimated total has been capped at $1,900.",
 } as const;

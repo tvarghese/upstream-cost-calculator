@@ -35,13 +35,9 @@ export interface FamilyInput {
 
 export interface FamilyCostResult extends CostResult {
   totalFamPeople: number;
-  totalKids: number;
   famPerPerson: number;
   effectiveRGKids: number;
   royalGorgeTotal: number;
-  isLargeFamily: boolean;
-  isCapped: boolean;
-  uncappedTotal: number;
 }
 
 export interface IndividualCostResult extends CostResult {

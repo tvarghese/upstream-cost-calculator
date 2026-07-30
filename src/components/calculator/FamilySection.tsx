@@ -19,8 +19,6 @@ interface FamilySectionProps {
   famRoom: string;
   royalGorgeKids: number;
   totalFamPeople: number;
-  totalKids: number;
-  isLargeFamily: boolean;
   effectiveRGKids: number;
   royalGorgeTotal: number;
   onAdultsChange: (value: number) => void;
@@ -42,8 +40,6 @@ export function FamilySection({
   effectiveRGKids,
   royalGorgeTotal,
   totalFamPeople,
-  totalKids,
-  isLargeFamily,
   onAdultsChange,
   onDisciplesChange,
   onOlder18plusChange,
@@ -118,17 +114,9 @@ export function FamilySection({
           <span className="summary-row__label">Total family members included here</span>
           <span className="summary-row__value">{totalFamPeople}</span>
         </div>
-        {isLargeFamily && (
-          <div className="info-box info-box--orange">
-            {NOTICES.familyLargeFamily}
-            <div className="info-box__note">
-              {totalKids} children in your family — your flat rate is $1,900 paid to JY USA.
-            </div>
-          </div>
-        )}
       </Section>
 
-      {!isLargeFamily && availableRooms.length > 0 && (
+      {availableRooms.length > 0 && (
         <Section step="3" label="Family Room Choice">
           <p className="hint-text">{NOTICES.familyRoom}</p>
           <div className="select-list">
@@ -161,7 +149,7 @@ export function FamilySection({
         </Section>
       )}
 
-      {!isLargeFamily && older18plus > 0 && (
+      {older18plus > 0 && (
         <Section step="4" label="Royal Gorge Bunk (optional — Older Kids 18+)">
           <div className="info-box info-box--pink">
             {NOTICES.royalGorgeAddon}

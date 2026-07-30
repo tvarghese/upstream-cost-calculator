@@ -1,7 +1,4 @@
 import {
-  FAMILY_LARGE_CAP,
-  FAMILY_LARGE_MIN_KIDS,
-  FAMILY_LARGE_MIN_MEMBERS,
   MEAL_RATES,
   NIGHTS,
   REG_FEES,
@@ -110,45 +107,6 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
   const effectiveRGKids = Math.min(royalGorgeKids, older18plus);
   const royalGorgeTotal = effectiveRGKids * ROYAL_GORGE_ADDON;
 
-  const totalKids = disciples + older18plus + kids7to11 + kidsUnder7;
-  const isLargeFamily =
-    totalFamPeople >= FAMILY_LARGE_MIN_MEMBERS &&
-    totalKids >= FAMILY_LARGE_MIN_KIDS;
-
-  const uncappedTotal = regFee + royalGorgeTotal + famRoomTotal + famMealsTotal;
-
-  if (isLargeFamily) {
-    const jyTotal = FAMILY_LARGE_CAP;
-    const ridgecrestTotal = 0;
-    const grandTotal = FAMILY_LARGE_CAP;
-    const famPerPerson = totalFamPeople > 0 ? grandTotal / totalFamPeople : 0;
-
-    const lineItems: LineItem[] = [
-      {
-        label: "Large Family Registration",
-        amount: FAMILY_LARGE_CAP,
-        sub: `${totalFamPeople} family members · flat rate (room & meals included)`,
-        dest: "JY",
-      },
-    ];
-
-    return {
-      regFee,
-      jyTotal,
-      ridgecrestTotal,
-      grandTotal,
-      lineItems,
-      totalFamPeople,
-      totalKids,
-      famPerPerson,
-      effectiveRGKids,
-      royalGorgeTotal,
-      isLargeFamily,
-      isCapped: uncappedTotal > FAMILY_LARGE_CAP,
-      uncappedTotal,
-    };
-  }
-
   const jyTotal = regFee + royalGorgeTotal;
   const ridgecrestTotal = famRoomTotal + famMealsTotal;
   const grandTotal = jyTotal + ridgecrestTotal;
@@ -200,12 +158,8 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
     grandTotal,
     lineItems,
     totalFamPeople,
-    totalKids,
     famPerPerson,
     effectiveRGKids,
     royalGorgeTotal,
-    isLargeFamily: false,
-    isCapped: false,
-    uncappedTotal: grandTotal,
   };
 }

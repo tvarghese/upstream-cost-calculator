@@ -14,7 +14,12 @@ export function RoomReference() {
       <div className="room-reference__grid">
         {ROOM_REFERENCE.map((r) => (
           <div key={r.name} className="room-reference__item">
-            <div className="room-reference__name">{r.name}</div>
+            <div className="room-reference__head">
+              <span className="room-reference__name">{r.name}</span>
+              {r.accessible && (
+                <span className="room-reference__badge">♿ Accessible</span>
+              )}
+            </div>
             {r.rate !== null ? (
               <>
                 <div>${r.rate}/night</div>
@@ -28,6 +33,24 @@ export function RoomReference() {
                 </div>
               </>
             )}
+            <div className="room-reference__beds">
+              <div>{r.beds}</div>
+              <div>
+                {r.bedCount !== null &&
+                  `${r.bedCount} bed${r.bedCount > 1 ? "s" : ""} · `}
+                Sleeps {r.sleeps}
+              </div>
+            </div>
+            <ul className="room-reference__amenities">
+              {r.amenities.map((a) => (
+                <li
+                  key={a.label}
+                  className={`room-reference__amenity ${a.included ? "" : "room-reference__amenity--absent"}`}
+                >
+                  {a.included ? "✓" : "✕"} {a.label}
+                </li>
+              ))}
+            </ul>
             <div className="room-reference__note">{r.note}</div>
           </div>
         ))}

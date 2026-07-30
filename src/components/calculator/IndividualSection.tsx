@@ -54,7 +54,9 @@ export function IndividualSection({
                 disabled={category === "student"}
                 trailing={
                   "maxOcc" in r ? (
-                    <div className="select-card__meta">up to {r.maxOcc}/room</div>
+                    <div className="select-card__meta">
+                      ideally {r.maxOcc} per room
+                    </div>
                   ) : undefined
                 }
               >
