@@ -116,7 +116,7 @@ export function calculateFamily(input: FamilyInput): FamilyCostResult {
     {
       label: "JY USA Registration",
       amount: regFee,
-      sub: "Couple / Family",
+      sub: "Family",
       dest: "JY",
     },
     {
