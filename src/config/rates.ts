@@ -3,7 +3,7 @@ export const NIGHTS = 4;
 export const ROYAL_GORGE_RATE = 234;
 export const ROYAL_GORGE_OCC = 12;
 export const ROYAL_GORGE_PERSON = ROYAL_GORGE_RATE / ROYAL_GORGE_OCC;
-export const ROYAL_GORGE_ADDON = 100;
+export const ROYAL_GORGE_ADDON = ROYAL_GORGE_PERSON * NIGHTS;
 
 export const MEAL_RATES = { adult: 147, child: 73.5 } as const;
 
