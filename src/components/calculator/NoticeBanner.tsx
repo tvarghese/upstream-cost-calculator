@@ -5,9 +5,9 @@ export function NoticeBanner() {
     <div className="notice-banner">
       <span className="notice-banner__icon">📌</span>
       <div className="notice-banner__content">
-        <strong>{NOTICES.madstersZion.title}</strong>
+        <strong>{NOTICES.MaDstersZion.title}</strong>
         <br />
-        <span className="notice-banner__body">{NOTICES.madstersZion.body}</span>
+        <span className="notice-banner__body">{NOTICES.MaDstersZion.body}</span>
       </div>
     </div>
   );

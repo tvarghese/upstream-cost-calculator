@@ -73,7 +73,7 @@ export function FamilySection({
             color="var(--color-blue-counter)"
           />
           <Counter
-            label="Disciples Track (12–17)"
+            label="Children (12–17)"
             subtitle={`$${MEAL_RATES.adult}/person meals`}
             value={disciples}
             min={0}
@@ -82,7 +82,7 @@ export function FamilySection({
             color="var(--color-purple)"
           />
           <Counter
-            label="Older Kids (18+, not Madsters)"
+            label="Older Kids (18+, not MaDsters)"
             subtitle={`$${MEAL_RATES.adult}/person meals`}
             value={older18plus}
             min={0}
