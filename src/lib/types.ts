@@ -1,7 +1,5 @@
 export type Category = "family" | "ya" | "student";
 
-export type CampusStudentPath = "package" | "with_family";
-
 export type PaymentDestination = "JY" | "Ridgecrest";
 
 export interface LineItem {
@@ -9,7 +7,6 @@ export interface LineItem {
   amount: number;
   sub: string;
   dest: PaymentDestination;
-  amountLabel?: string;
 }
 
 export interface CostResult {
@@ -34,17 +31,13 @@ export interface FamilyInput {
   kidsUnder7: number;
   famRoom: string;
   royalGorgeKids: number;
-  campusStudents: number;
-  campusStudentPath: CampusStudentPath;
 }
 
 export interface FamilyCostResult extends CostResult {
   totalFamPeople: number;
-  householdPeople: number;
   famPerPerson: number;
   effectiveRGKids: number;
   royalGorgeTotal: number;
-  comparisonNote: string | null;
 }
 
 export interface IndividualCostResult extends CostResult {

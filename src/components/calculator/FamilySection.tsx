@@ -4,11 +4,8 @@ import {
   MEAL_RATES,
   NIGHTS,
   ROYAL_GORGE_ADDON,
-  ZION_BOTH_FEE,
-  ZION_ONLY_FEE,
 } from "../../config/rates";
 import { fmt } from "../../lib/format";
-import type { CampusStudentPath } from "../../lib/types";
 import { Counter } from "../ui/Counter";
 import { Section } from "../ui/Section";
 import { SelectCard } from "../ui/SelectCard";
@@ -21,11 +18,7 @@ interface FamilySectionProps {
   kidsUnder7: number;
   famRoom: string;
   royalGorgeKids: number;
-  roomHeadcount: number;
-  campusStudents: number;
-  campusStudentPath: CampusStudentPath;
-  campusSectionOpen: boolean;
-  includedPeople: number;
+  totalFamPeople: number;
   effectiveRGKids: number;
   royalGorgeTotal: number;
   onAdultsChange: (value: number) => void;
@@ -35,9 +28,6 @@ interface FamilySectionProps {
   onKidsUnder7Change: (value: number) => void;
   onFamRoomChange: (room: string) => void;
   onRoyalGorgeKidsChange: (value: number) => void;
-  onCampusStudentsChange: (value: number) => void;
-  onCampusStudentPathChange: (path: CampusStudentPath) => void;
-  onCampusSectionOpenChange: (open: boolean) => void;
 }
 
 export function FamilySection({
@@ -49,11 +39,7 @@ export function FamilySection({
   famRoom,
   effectiveRGKids,
   royalGorgeTotal,
-  roomHeadcount,
-  campusStudents,
-  campusStudentPath,
-  campusSectionOpen,
-  includedPeople,
+  totalFamPeople,
   onAdultsChange,
   onDisciplesChange,
   onOlder18plusChange,
@@ -61,13 +47,8 @@ export function FamilySection({
   onKidsUnder7Change,
   onFamRoomChange,
   onRoyalGorgeKidsChange,
-  onCampusStudentsChange,
-  onCampusStudentPathChange,
-  onCampusSectionOpenChange,
 }: FamilySectionProps) {
-  const availableRooms = getFamilyRoomsForPeople(roomHeadcount);
-  const stayingWithFamily =
-    campusSectionOpen && campusStudents > 0 && campusStudentPath === "with_family";
+  const availableRooms = getFamilyRoomsForPeople(totalFamPeople);
 
   return (
     <>
@@ -128,96 +109,16 @@ export function FamilySection({
             color="var(--color-text-muted)"
           />
         </div>
+
+        <div className="summary-row">
+          <span className="summary-row__label">Total family members included here</span>
+          <span className="summary-row__value">{totalFamPeople}</span>
+        </div>
       </Section>
 
-      <div className="section">
-        <button
-          type="button"
-          className="section-toggle"
-          aria-expanded={campusSectionOpen}
-          onClick={() => onCampusSectionOpenChange(!campusSectionOpen)}
-        >
-          <span className="section__label section-toggle__label">
-            <span className="section__step">3.</span>
-            Campus students attending both ZION and UPSTREAM
-          </span>
-          <span className="section-toggle__action">{campusSectionOpen ? "Hide" : "Show"}</span>
-        </button>
-        {campusSectionOpen ? (
-          <>
-            <div className="info-box info-box--orange">
-              <strong>{NOTICES.campusStudentsMadsters}</strong>
-            </div>
-            <p className="hint-text hint-text--spaced">{NOTICES.campusStudentsIntro}</p>
-            <Counter
-              label="Campus students (not MADsters)"
-              subtitle="Want both ZION and UPSTREAM"
-              value={campusStudents}
-              min={0}
-              max={8}
-              onChange={onCampusStudentsChange}
-              color="var(--color-accent-light)"
-            />
-            {campusStudents > 0 && (
-              <div className="select-list campus-paths">
-                <SelectCard
-                  selected={campusStudentPath === "package"}
-                  onClick={() => onCampusStudentPathChange("package")}
-                  trailing={
-                    <div className="select-card__meta">
-                      <div className="select-card__price">{fmt(ZION_BOTH_FEE)}</div>
-                      <div>each, to JY</div>
-                    </div>
-                  }
-                >
-                  <div className="select-card__name">Register through ZION for both</div>
-                  <div className="select-card__desc">
-                    UPSTREAM registration, Royal Gorge lodging, and meals are included.
-                  </div>
-                  <div className="select-card__detail">{NOTICES.campusStudentPackage}</div>
-                </SelectCard>
-                <SelectCard
-                  selected={campusStudentPath === "with_family"}
-                  onClick={() => onCampusStudentPathChange("with_family")}
-                  trailing={
-                    <div className="select-card__meta">
-                      <div className="select-card__price">{fmt(ZION_ONLY_FEE)}</div>
-                      <div>each, to JY</div>
-                    </div>
-                  }
-                >
-                  <div className="select-card__name">ZION only, stay in the family room</div>
-                  <div className="select-card__desc">
-                    Counted as 18+ on the family UPSTREAM registration.
-                  </div>
-                  <div className="select-card__detail">{NOTICES.campusStudentWithFamily}</div>
-                </SelectCard>
-              </div>
-            )}
-          </>
-        ) : (
-          <p className="hint-text">
-            Optional. Open this only if campus students who are not MADsters want both ZION and
-            UPSTREAM.
-          </p>
-        )}
-      </div>
-
-      <div className="summary-row summary-row--after-section">
-        <span className="summary-row__label">Total family members included here</span>
-        <span className="summary-row__value">{includedPeople}</span>
-      </div>
-
       {availableRooms.length > 0 && (
-        <Section step="4" label="Family Room Choice">
+        <Section step="3" label="Family Room Choice">
           <p className="hint-text">{NOTICES.familyRoom}</p>
-          {stayingWithFamily && (
-            <p className="hint-text hint-text--spaced">
-              These room choices include {campusStudents} campus student
-              {campusStudents === 1 ? "" : "s"} staying with the family. Walnut has bunk
-              beds if you need them. No Royal Gorge bunk is added for these students.
-            </p>
-          )}
           <div className="select-list">
             {availableRooms.map((r) => {
               const selected = famRoom === r.id;
@@ -249,7 +150,7 @@ export function FamilySection({
       )}
 
       {older18plus > 0 && (
-        <Section step="5" label="Royal Gorge Bunk (optional — Older Kids 18+)">
+        <Section step="4" label="Royal Gorge Bunk (optional — Older Kids 18+)">
           <div className="info-box info-box--pink">
             {NOTICES.royalGorgeAddon}
             <div className="info-box__note">{NOTICES.royalGorgeAddonNote}</div>
