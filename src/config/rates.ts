@@ -43,7 +43,7 @@ export const ROOMS_FAM = [
     desc: "1 Queen + 2 Bunks · only 13 rooms · first come, first served",
     rate: 114,
     limited: true,
-    minPeople: 6,
+    minPeople: 5,
   },
   {
     id: "mountlaurel",
@@ -51,7 +51,7 @@ export const ROOMS_FAM = [
     desc: "2 Queen Beds",
     rate: 144,
     limited: false,
-    minPeople: 4,
+    minPeople: 2,
   },
   {
     id: "pritchell",
@@ -60,7 +60,7 @@ export const ROOMS_FAM = [
     rate: 94,
     limited: false,
     minPeople: 2,
-    maxPeople: 3,
+    maxPeople: 4,
   },
 ] as const;
 

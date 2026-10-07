@@ -33,9 +33,9 @@ export function UpstreamCalculator() {
   useEffect(() => {
     if (!isFamily) return;
     const available = getFamilyRoomsForPeople(totalFamPeople);
-    if (available.length > 0 && !available.some((r) => r.id === famRoom)) {
-      setFamRoom(available[0].id);
-    }
+    if (available.length === 0 || available.some((r) => r.id === famRoom)) return;
+    const fallback = available.find((r) => r.id === "mountlaurel") ?? available[0];
+    setFamRoom(fallback.id);
   }, [totalFamPeople, famRoom, isFamily]);
 
   const handleCategoryChange = (next: Category) => {
