@@ -13,6 +13,11 @@ export const REG_FEES = {
   student: { label: "Campus Student", fee: 50 },
 } as const;
 
+/** ZION + UPSTREAM together. Paid to JY. Includes UPSTREAM registration, Royal Gorge lodging, and meals. */
+export const ZION_BOTH_FEE = 550;
+/** ZION only. Paid to JY. UPSTREAM registration is the family fee. */
+export const ZION_ONLY_FEE = 350;
+
 export const ROOMS_YA = [
   {
     id: "pritchell",
@@ -70,6 +75,29 @@ export function getFamilyRoomsForPeople(people: number) {
     if ("maxPeople" in r && people > r.maxPeople) return false;
     return true;
   });
+}
+
+export function cheapestFamilyRoom(people: number) {
+  const available = getFamilyRoomsForPeople(people);
+  return available.reduce<(typeof available)[number] | undefined>((best, room) => {
+    if (!best || room.rate < best.rate) return room;
+    return best;
+  }, undefined);
+}
+
+export function resolveFamilyRoom(
+  people: number,
+  preferredId: string,
+  preferCheapest: boolean,
+): string {
+  const available = getFamilyRoomsForPeople(people);
+  if (available.length === 0 || available.some((room) => room.id === preferredId)) {
+    return preferredId;
+  }
+  if (preferCheapest) {
+    return cheapestFamilyRoom(people)?.id ?? preferredId;
+  }
+  return available.find((room) => room.id === "mountlaurel")?.id ?? available[0].id;
 }
 
 export const ROOM_REFERENCE = [

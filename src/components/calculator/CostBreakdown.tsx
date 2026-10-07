@@ -8,6 +8,7 @@ interface CostBreakdownProps {
   grandTotal: number;
   perPerson?: number;
   totalPeople?: number;
+  comparisonNote?: string | null;
 }
 
 export function CostBreakdown({
@@ -17,6 +18,7 @@ export function CostBreakdown({
   grandTotal,
   perPerson,
   totalPeople,
+  comparisonNote,
 }: CostBreakdownProps) {
   return (
     <div className="breakdown">
@@ -24,19 +26,23 @@ export function CostBreakdown({
 
       {lineItems.map((item, i) => (
         <div
-          key={item.label}
+          key={`${item.label}-${i}`}
           className={`breakdown__item ${i < lineItems.length - 1 ? "breakdown__item--bordered" : ""}`}
         >
           <div>
             <div className="breakdown__item-label">{item.label}</div>
             <div className="breakdown__item-sub">{item.sub}</div>
-            <div
-              className={`breakdown__badge ${item.dest === "JY" ? "breakdown__badge--jy" : "breakdown__badge--ridgecrest"}`}
-            >
-              → Pay to {item.dest === "JY" ? "JY USA" : "Ridgecrest"}
-            </div>
+            {!item.amountLabel && (
+              <div
+                className={`breakdown__badge ${item.dest === "JY" ? "breakdown__badge--jy" : "breakdown__badge--ridgecrest"}`}
+              >
+                → Pay to {item.dest === "JY" ? "JY USA" : "Ridgecrest"}
+              </div>
+            )}
           </div>
-          <div className="breakdown__item-amount">{fmt(item.amount)}</div>
+          <div className="breakdown__item-amount">
+            {item.amountLabel ?? fmt(item.amount)}
+          </div>
         </div>
       ))}
 
@@ -60,6 +66,7 @@ export function CostBreakdown({
             ≈ {fmt(perPerson)} per person across {totalPeople} people
           </div>
         )}
+        {comparisonNote && <div className="breakdown__comparison">{comparisonNote}</div>}
       </div>
     </div>
   );

@@ -98,6 +98,34 @@
   margin-right: 6px;
 }
 
+.section-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.section-toggle__label {
+  margin-bottom: 0;
+}
+
+.section-toggle__action {
+  flex-shrink: 0;
+  padding-top: 1px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
 /* Category selector */
 .category-grid {
   display: grid;
@@ -385,6 +413,11 @@
   color: var(--color-text);
 }
 
+.summary-row--after-section {
+  margin-top: 0;
+  margin-bottom: var(--spacing-section);
+}
+
 /* Room sharing */
 .room-sharing {
   display: flex;
@@ -585,6 +618,21 @@
   margin-top: 10px;
   color: var(--color-text-subtle);
   font-size: 12px;
+}
+
+.breakdown__comparison {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-info-bg);
+  border: 1px solid var(--color-info-border);
+  color: var(--color-text-body);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.campus-paths {
+  margin-top: 12px;
 }
 
 /* Room reference footer */

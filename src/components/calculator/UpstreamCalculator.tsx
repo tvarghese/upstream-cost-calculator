@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { EVENT } from "../../config/event";
-import { getFamilyRoomsForPeople } from "../../config/rates";
-import { calculateFamily, calculateIndividual } from "../../lib/calculate";
-import type { Category } from "../../lib/types";
+import { resolveFamilyRoom } from "../../config/rates";
+import { calculateFamily, calculateIndividual, lodgingHeadcount } from "../../lib/calculate";
+import type { CampusStudentPath, Category } from "../../lib/types";
 import { CategorySelector } from "./CategorySelector";
 import { CostBreakdown } from "./CostBreakdown";
 import { FamilySection } from "./FamilySection";
@@ -23,20 +23,31 @@ export function UpstreamCalculator() {
   const [kidsUnder7, setKidsUnder7] = useState(0);
   const [famRoom, setFamRoom] = useState("pritchell");
   const [royalGorgeKids, setRoyalGorgeKids] = useState(0);
+  const [campusStudents, setCampusStudents] = useState(0);
+  const [campusStudentPath, setCampusStudentPath] = useState<CampusStudentPath>("package");
+  const [campusSectionOpen, setCampusSectionOpen] = useState(false);
 
   const isFamily = category === "family";
   const isIndividual = category === "ya" || category === "student";
 
   const totalFamPeople =
     adults + disciples + older18plus + kids7to11 + kidsUnder7;
+  const includedCampusStudents = campusSectionOpen ? campusStudents : 0;
+  const roomHeadcount = lodgingHeadcount(
+    totalFamPeople,
+    includedCampusStudents,
+    campusStudentPath,
+  );
+  const resolvedRoom = resolveFamilyRoom(
+    roomHeadcount,
+    famRoom,
+    includedCampusStudents > 0,
+  );
 
   useEffect(() => {
     if (!isFamily) return;
-    const available = getFamilyRoomsForPeople(totalFamPeople);
-    if (available.length === 0 || available.some((r) => r.id === famRoom)) return;
-    const fallback = available.find((r) => r.id === "mountlaurel") ?? available[0];
-    setFamRoom(fallback.id);
-  }, [totalFamPeople, famRoom, isFamily]);
+    if (resolvedRoom !== famRoom) setFamRoom(resolvedRoom);
+  }, [isFamily, resolvedRoom, famRoom]);
 
   const handleCategoryChange = (next: Category) => {
     setCategory(next);
@@ -57,8 +68,10 @@ export function UpstreamCalculator() {
         older18plus,
         kids7to11,
         kidsUnder7,
-        famRoom,
+        famRoom: resolvedRoom,
         royalGorgeKids,
+        campusStudents: includedCampusStudents,
+        campusStudentPath,
       })
     : null;
 
@@ -104,9 +117,13 @@ export function UpstreamCalculator() {
               older18plus={older18plus}
               kids7to11={kids7to11}
               kidsUnder7={kidsUnder7}
-              famRoom={famRoom}
+              famRoom={resolvedRoom}
               royalGorgeKids={royalGorgeKids}
-              totalFamPeople={familyResult.totalFamPeople}
+              roomHeadcount={roomHeadcount}
+              campusStudents={campusStudents}
+              campusStudentPath={campusStudentPath}
+              campusSectionOpen={campusSectionOpen}
+              includedPeople={familyResult.householdPeople}
               effectiveRGKids={familyResult.effectiveRGKids}
               royalGorgeTotal={familyResult.royalGorgeTotal}
               onAdultsChange={setAdults}
@@ -116,6 +133,9 @@ export function UpstreamCalculator() {
               onKidsUnder7Change={setKidsUnder7}
               onFamRoomChange={setFamRoom}
               onRoyalGorgeKidsChange={setRoyalGorgeKids}
+              onCampusStudentsChange={setCampusStudents}
+              onCampusStudentPathChange={setCampusStudentPath}
+              onCampusSectionOpenChange={setCampusSectionOpen}
             />
           )}
 
@@ -126,7 +146,8 @@ export function UpstreamCalculator() {
               ridgecrestTotal={costResult.ridgecrestTotal}
               grandTotal={costResult.grandTotal}
               perPerson={familyResult?.famPerPerson}
-              totalPeople={familyResult?.totalFamPeople}
+              totalPeople={familyResult?.householdPeople}
+              comparisonNote={familyResult?.comparisonNote}
             />
           )}
 
