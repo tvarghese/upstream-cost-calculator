@@ -8,8 +8,8 @@ export const ROYAL_GORGE_ADDON = ROYAL_GORGE_PERSON * NIGHTS;
 export const MEAL_RATES = { adult: 147, child: 73.5 } as const;
 
 export const REG_FEES = {
-  family: { label: "Family", fee: 300 },
-  ya: { label: "Individual Registration", fee: 150 },
+  family: { label: "Family", fee: 350 },
+  ya: { label: "Individual Registration", fee: 200 },
   student: { label: "Campus Student", fee: 50 },
 } as const;
 
@@ -38,11 +38,11 @@ export const ROOMS_YA = [
 
 export const ROOMS_FAM = [
   {
-    id: "walnut",
-    name: "Walnut",
-    desc: "1 Queen + 2 Bunks · only 13 rooms · first come, first served",
+    id: "maple",
+    name: "Maple",
+    desc: "3 Sets of Bunks · 6 Beds · Sleeps 6 · Private Bathroom · No Hairdryer",
     rate: 114,
-    limited: true,
+    limited: false,
     minPeople: 5,
   },
   {
@@ -103,6 +103,19 @@ export const ROOM_REFERENCE = [
       { label: "Desk", included: true },
       { label: "Hairdryer", included: true },
       { label: "Iron & Board", included: true },
+    ],
+  },
+  {
+    name: "Maple",
+    rate: 114,
+    note: "families only",
+    beds: "3 Sets of Bunks",
+    bedCount: 6,
+    sleeps: 6,
+    accessible: false,
+    amenities: [
+      { label: "Private Bathroom", included: true },
+      { label: "Hairdryer", included: false },
     ],
   },
   {
